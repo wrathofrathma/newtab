@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "New Tab",
+  "version": "1.0",
+  "description": "Minimal new tab extension",
+  "author": "Rathma",
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "permissions": ["storage"]
+}
