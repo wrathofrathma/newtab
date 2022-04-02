@@ -60,6 +60,9 @@ export const useStore = defineStore("main", {
   },
 
   getters: {
+    categoryList: (state) => {
+      return Object.keys(state.categories);
+    },
     category: (state) => {
       return (name: string): Category => {
         const categories: Categories = state.categories;

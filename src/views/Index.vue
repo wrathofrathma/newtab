@@ -7,10 +7,10 @@
     <div class="flex flex-col p-24 gap-16">
       <search></search>
       <div class="flex flex-row gap-20">
-        <link-tree category="work"></link-tree>
-        <link-tree category="dev"></link-tree>
-        <link-tree category="reddit"></link-tree>
-        <link-tree category="play"></link-tree>
+        <link-tree
+          v-for="category in categories"
+          :category="category"
+        ></link-tree>
       </div>
     </div>
   </default>
@@ -20,4 +20,8 @@
 import Default from "@/layouts/Default.vue";
 import LinkTree from "@/components/LinkTree.vue";
 import Search from "@/components/Search.vue";
+import { useStore } from "../store";
+
+const store = useStore();
+const categories = store.categoryList;
 </script>
