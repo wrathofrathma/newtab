@@ -6,7 +6,7 @@ export const commands = {
     action: (query: string) => {
       const location =
         "https://www.google.com/search?q=" + query.replace(" ", "+");
-      window.location = location;
+      window.location.href = location;
     },
     description: "Google search engine",
   },
@@ -14,7 +14,7 @@ export const commands = {
     action: (query: string) => {
       const location =
         "https://www.duckduckgo.com/?q=" + query.replace(" ", "+");
-      window.location = location;
+      window.location.href = location;
     },
     description: "DuckDuckGo search engine",
   },
@@ -23,14 +23,14 @@ export const commands = {
       const location =
         "https://www.youtube.com/results?search_query=" +
         query.replace(" ", "+");
-      window.location = location;
+      window.location.href = location;
     },
     description: "Search Youtube",
   },
   amazon: {
     action: (query: string) => {
       const location = "https://www.amazon.com/s?k=" + query.replace(" ", "+");
-      window.location = location;
+      window.location.href = location;
     },
     description: "Search Amazon",
   },
