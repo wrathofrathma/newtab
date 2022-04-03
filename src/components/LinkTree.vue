@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div class="font-bold text-xl" v-if="category_link">
-      <a :href="category_link">{{ category }}</a>
+    <div class="font-bold text-xl" v-if="category.link">
+      <a :href="category.link">{{ title }}</a>
     </div>
     <div class="font-bold text-xl" v-else>
-      {{ category }}
+      {{ title }}
     </div>
     <div>
       <div
-        v-for="(link, index) in links"
+        v-for="(link, index) in category.links"
         class="text-gruvbox-dark-blue-1 text-base font-medium"
         style=""
       >
@@ -20,14 +20,7 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-  category: string;
+  title: string;
+  category: { link: string; links: { [key: string]: string } };
 }>();
-
-import { useCategoryStore } from "../store/category";
-
-const store = useCategoryStore();
-
-const links = store.links(props.category);
-
-const category_link = store.categoryLink(props.category);
 </script>

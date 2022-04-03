@@ -8,7 +8,8 @@
       <terminal></terminal>
       <div class="flex flex-row gap-20">
         <link-tree
-          v-for="category in categories"
+          v-for="(category, index) in categories"
+          :title="index"
           :category="category"
         ></link-tree>
       </div>
@@ -24,5 +25,5 @@ import { useCategoryStore } from "../store/category";
 import { storeToRefs } from "pinia";
 
 const store = useCategoryStore();
-const categories = storeToRefs(store).categoryList;
+const categories = storeToRefs(store).categories;
 </script>
