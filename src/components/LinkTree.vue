@@ -3,7 +3,7 @@
     <div class="font-bold text-xl" v-if="category_link">
       <a :href="category_link">{{ category }}</a>
     </div>
-    <div class="font-bold text-xl" v-if="!category_link">
+    <div class="font-bold text-xl" v-else>
       {{ category }}
     </div>
     <div>
