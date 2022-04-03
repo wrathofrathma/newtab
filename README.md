@@ -1,37 +1,54 @@
 # Overview
 
-This template is built with the intention of having somewhat a somewhat sane, but full featured template for Vue 3, Typescript, and Tailwind.
-
-I built everything on top of the default Vue 3 / Typescript template from Vite.
+Minimal new tab page for chrome with a terminal interface instead of traditional menus for configuration & searching the web.
 
 # Features
 
-- [x] Vue 3
-- [x] Vue Router
-- [x] Pinia
-- [x] Typescript
-- [x] Vite
-- [x] Tailwindcss
-- [x] Postcss
-- [x] @ alias to src/ directory
-- [x] Prettier auto formatting on commit
-- [x] Composition api
-- [ ] Axios
-- [ ] dev server proxy
+- Vibes
+- Links organized by category
+- Terminal interface
 
-# Vue 3 + Typescript + Vite
+# Upcoming Features
 
-This template should help get you started developing with Vue 3 and Typescript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+- Fuzzy searching history
+- Multiple themes
+- Integrated searching of common search engines / websites
+- Customizable terminal prompt
+- Configuration exporting / importing
+- Customizable image
 
-## Recommended IDE Setup
+# Terminal Commands
 
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+## google
 
-## Type Support For `.vue` Imports in TS
+> \> <span style="color: red;">google</span> egirls are ruining my life
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
+## duckduckgo
 
-1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+> \> <span style="color: red;">duckduckgo</span> how to center a div
 
-You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+## amazon
+
+> \> <span style="color: red;">amazon</span> nvidia 3090
+
+## youtube
+
+> \> <span style="color: red;">youtube</span> linus tech tips
+
+## category
+
+## link
+
+## import
+
+## export
+
+## image
+
+## help
+
+## ps1
+
+## theme
+
+## history
