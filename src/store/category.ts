@@ -86,12 +86,19 @@ export const useCategoryStore = defineStore("category", {
     },
   },
   actions: {
-    addCategory(category) {
-      if (category in this.categories) {
-        console.log("Already exists");
-      } else {
-        console.log("DNE");
+    addCategory(category: string, link: string = "") {
+      if (!(category in this.categories)) {
+        this.categories[category] = {
+          link,
+          links: {},
+        };
       }
     },
+    removeCategory(category: string) {
+      if (category in this.categories) {
+        delete this.categories[category];
+      }
+    },
+    editCategory(category: string, link: string) {},
   },
 });
