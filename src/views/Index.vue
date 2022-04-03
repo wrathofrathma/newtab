@@ -20,8 +20,8 @@
 import Default from "@/layouts/Default.vue";
 import LinkTree from "@/components/LinkTree.vue";
 import Terminal from "@/components/Terminal.vue";
-import { useStore } from "../store";
+import { useCategoryStore } from "../store/category";
 
-const store = useStore();
+const store = useCategoryStore();
 const categories = store.categoryList;
 </script>

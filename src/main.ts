@@ -4,8 +4,8 @@ import "./index.css";
 // vue-router setup
 import router from "./router";
 // pinia store setup
-import { createPinia } from "pinia";
+import pinia from "./store";
 
 import App from "./App.vue";
 
-createApp(App).use(router).use(createPinia()).mount("#app");
+createApp(App).use(router).use(pinia).mount("#app");

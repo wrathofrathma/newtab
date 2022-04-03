@@ -23,9 +23,9 @@ const props = defineProps<{
   category: string;
 }>();
 
-import { useStore } from "../store";
+import { useCategoryStore } from "../store/category";
 
-const store = useStore();
+const store = useCategoryStore();
 
 const links = store.links(props.category);
 
