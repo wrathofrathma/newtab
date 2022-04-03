@@ -5,6 +5,7 @@ import duckduckgo from "./duckduckgo";
 import youtube from "./youtube";
 import amazon from "./amazon";
 import category from "./category";
+import link from "./link";
 
 export const commands = {
   google,
@@ -12,6 +13,7 @@ export const commands = {
   youtube,
   amazon,
   category,
+  link,
   // link: {
   //   action: (query: string) => {},
   //   description: "",

@@ -99,6 +99,17 @@ export const useCategoryStore = defineStore("category", {
         delete this.categories[category];
       }
     },
-    editCategory(category: string, link: string) {},
+    addLink(category: string, title: string, link: string) {
+      if (category in this.categories) {
+        this.categories[category].links[title] = link;
+      }
+    },
+    removeLink(category: string, title: string) {
+      if (category in this.categories) {
+        if (title in this.categories[category].links) {
+          delete this.categories[category].links[title];
+        }
+      }
+    },
   },
 });
