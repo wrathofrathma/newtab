@@ -12,8 +12,8 @@
           autofocus
           spellcheck="false"
           type="text"
-          @input="oninput"
           class="focus:outline-none bg-transparent"
+          @keyup.space="oninput"
           @keyup.delete="backspace"
           v-model.trim="query"
           @keyup.enter="submit"

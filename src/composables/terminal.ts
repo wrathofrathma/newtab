@@ -1,71 +1,45 @@
 import { ref } from "vue";
 import { useTerminalStore } from "../store/terminal";
+import google from "./google";
+import duckduckgo from "./duckduckgo";
+import youtube from "./youtube";
+import amazon from "./amazon";
+import category from "./category";
 
 export const commands = {
-  google: {
-    action: (query: string) => {
-      const location =
-        "https://www.google.com/search?q=" + query.replace(" ", "+");
-      window.location.href = location;
-    },
-    description: "Google search engine",
-  },
-  duckduckgo: {
-    action: (query: string) => {
-      const location =
-        "https://www.duckduckgo.com/?q=" + query.replace(" ", "+");
-      window.location.href = location;
-    },
-    description: "DuckDuckGo search engine",
-  },
-  youtube: {
-    action: (query: string) => {
-      const location =
-        "https://www.youtube.com/results?search_query=" +
-        query.replace(" ", "+");
-      window.location.href = location;
-    },
-    description: "Search Youtube",
-  },
-  amazon: {
-    action: (query: string) => {
-      const location = "https://www.amazon.com/s?k=" + query.replace(" ", "+");
-      window.location.href = location;
-    },
-    description: "Search Amazon",
-  },
-  category: {
-    action: (query: string) => {},
-    description: "",
-  },
-  link: {
-    action: (query: string) => {},
-    description: "",
-  },
-  import: {
-    action: (query: string) => {},
-    description: "",
-  },
-  export: {
-    action: (query: string) => {},
-    description: "",
-  },
-  image: {
-    action: (query: string) => {},
-    description: "",
-  },
-  help: {
-    action: (query: string) => {},
-    description: "",
-  },
-  ps1: {
-    action: (query: string) => {},
-    description: "",
-  },
-  theme: {
-    action: (query: string) => {},
-    description: "",
-  },
+  google,
+  duckduckgo,
+  youtube,
+  amazon,
+  category,
+  // link: {
+  //   action: (query: string) => {},
+  //   description: "",
+  // },
+  // import: {
+  //   action: (query: string) => {},
+  //   description: "",
+  // },
+  // export: {
+  //   action: (query: string) => {},
+  //   description: "",
+  // },
+  // image: {
+  //   action: (query: string) => {},
+  //   description: "",
+  // },
+  // help: {
+  //   action: (query: string) => {},
+  //   description: "",
+  // },
+  // ps1: {
+  //   action: (query: string) => {},
+  //   description: "",
+  // },
+  // theme: {
+  //   action: (query: string) => {},
+  //   description: "",
+  // },
 };
 
 export const commandList = Object.keys(commands);
