@@ -21,7 +21,8 @@ import Default from "@/layouts/Default.vue";
 import LinkTree from "@/components/LinkTree.vue";
 import Terminal from "@/components/Terminal.vue";
 import { useCategoryStore } from "../store/category";
+import { storeToRefs } from "pinia";
 
 const store = useCategoryStore();
-const categories = store.categoryList;
+const categories = storeToRefs(store).categoryList;
 </script>
