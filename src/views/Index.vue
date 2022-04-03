@@ -5,7 +5,7 @@
     </template>
 
     <div class="flex flex-col p-24 gap-16">
-      <search></search>
+      <terminal></terminal>
       <div class="flex flex-row gap-20">
         <link-tree
           v-for="category in categories"
@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import Default from "@/layouts/Default.vue";
 import LinkTree from "@/components/LinkTree.vue";
-import Search from "@/components/Search.vue";
+import Terminal from "@/components/Terminal.vue";
 import { useStore } from "../store";
 
 const store = useStore();
