@@ -6,6 +6,8 @@ import youtube from "./youtube";
 import amazon from "./amazon";
 import category from "./category";
 import link from "./link";
+import importCommand from "./import";
+import exportCommand from "./export";
 
 export const commands = {
   google,
@@ -14,34 +16,8 @@ export const commands = {
   amazon,
   category,
   link,
-  // link: {
-  //   action: (query: string) => {},
-  //   description: "",
-  // },
-  // import: {
-  //   action: (query: string) => {},
-  //   description: "",
-  // },
-  // export: {
-  //   action: (query: string) => {},
-  //   description: "",
-  // },
-  // image: {
-  //   action: (query: string) => {},
-  //   description: "",
-  // },
-  // help: {
-  //   action: (query: string) => {},
-  //   description: "",
-  // },
-  // ps1: {
-  //   action: (query: string) => {},
-  //   description: "",
-  // },
-  // theme: {
-  //   action: (query: string) => {},
-  //   description: "",
-  // },
+  import: importCommand,
+  export: exportCommand,
 };
 
 export const commandList = Object.keys(commands);

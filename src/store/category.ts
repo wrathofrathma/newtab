@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { persistedState } from "./index";
 
 // Need some type definitions
 type Category = {
@@ -18,44 +19,9 @@ export const useCategoryStore = defineStore("category", {
   // other options...
   state: () => {
     return {
-      categories: {
-        reddit: {
-          link: "https://reddit.com",
-          links: {
-            programming: "https://reddit.com/r/programming",
-            selfhosted: "https://reddit.com/r/selfhosted",
-            unixporn: "https://reddit.com/r/unixporn",
-            manga: "https://reddit.com/r/manga",
-          },
-        },
-        play: {
-          link: "",
-          links: {
-            youtube: "https://youtube.com",
-            twitch: "https://twitch.tv",
-            speedcube: "https://speedcube.app",
-            wordle: "https://www.nytimes.com/games/wordle/index.html",
-          },
-        },
-        dev: {
-          link: "",
-          links: {
-            github: "https://github.com",
-            mankier: "https://mankier.com",
-            devdocs: "https://devdocs.io",
-            hackernews: "https://news.ycombinator.com/",
-          },
-        },
-        work: {
-          link: "",
-          links: {
-            foreman: "https://hslinux.salisbury.edu",
-            docker: "https://hslinux.salisbury.edu:9443",
-            outlook: "https://outlook.office.com/mail/",
-            gullnet: "https://www.salisbury.edu/employees/gullnet/",
-          },
-        },
-      },
+      categories: persistedState.category?.categories
+        ? persistedState.category.categories
+        : {},
     };
   },
 
@@ -110,6 +76,9 @@ export const useCategoryStore = defineStore("category", {
           delete this.categories[category].links[title];
         }
       }
+    },
+    setCategory(settings) {
+      this.categories = settings.categories;
     },
   },
 });

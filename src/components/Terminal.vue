@@ -13,11 +13,12 @@
           spellcheck="false"
           type="text"
           class="focus:outline-none bg-transparent"
-          @keyup.space="oninput"
+          @input="oninput"
           @keyup.delete="backspace"
           v-model.trim="query"
           @keyup.enter="submit"
         />
+        <input ref="file" hidden type="file" @change="importSettings" />
       </div>
     </div>
   </div>
@@ -27,14 +28,24 @@
 import { ref } from "vue";
 import { useTerminalStore } from "../store/terminal";
 import { processCommand, commandList } from "../composables/terminal";
+import { importSettings } from "../composables/settings";
+import { storeToRefs } from "pinia";
 
 const terminalStore = useTerminalStore();
 
-const PS1 = terminalStore.PS1;
+const PS1 = storeToRefs(terminalStore).PS1;
 const command = ref("");
 const query = ref("");
+const file = ref<HTMLElement | null>(null);
 
 function submit() {
+  // Submit behavior changes for file imports (whether it's a JSON for settings or an image)
+  if (command.value === "import") {
+    if (file.value !== null) {
+      file.value.click();
+    }
+  }
+
   processCommand(command.value, query.value);
   command.value = "";
   query.value = "";
@@ -42,6 +53,7 @@ function submit() {
 
 function backspace() {
   if (query.value.length === 0) {
+    query.value = command.value.substring(0, command.value.length);
     command.value = "";
   }
 }

@@ -1,12 +1,16 @@
 import { defineStore } from "pinia";
+import { persistedState } from "./index";
 
-// useStore could be anything like useUser, useCart
-// the first argument is a unique id of the store across your application
 export const useTerminalStore = defineStore("terminal", {
   // other options...
   state: () => {
     return {
-      PS1: ">",
+      PS1: persistedState.terminal?.PS1 ? persistedState.terminal.PS1 : ">",
     };
+  },
+  actions: {
+    setTerminal(settings) {
+      this.PS1 = settings.PS1;
+    },
   },
 });
