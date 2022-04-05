@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { persistedState } from "./index";
+import prependHttp from "prepend-http";
 
 // Need some type definitions
 type Category = {
@@ -55,7 +56,7 @@ export const useCategoryStore = defineStore("category", {
     addCategory(category: string, link: string = "") {
       if (!(category in this.categories)) {
         this.categories[category] = {
-          link,
+          link: prependHttp(link),
           links: {},
         };
       }
@@ -67,7 +68,7 @@ export const useCategoryStore = defineStore("category", {
     },
     addLink(category: string, title: string, link: string) {
       if (category in this.categories) {
-        this.categories[category].links[title] = link;
+        this.categories[category].links[title] = preptendHttp(link);
       }
     },
     removeLink(category: string, title: string) {

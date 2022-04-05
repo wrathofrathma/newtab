@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "pinia": "^2.0.13",
+    "prepend-http": "^4.0.0",
     "vue": "^3.2.25",
     "vue-router": "4"
   },
