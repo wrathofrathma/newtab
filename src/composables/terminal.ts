@@ -8,6 +8,7 @@ import category from "./category";
 import link from "./link";
 import importCommand from "./import";
 import exportCommand from "./export";
+import reddit from "./reddit";
 
 export const commands = {
   google,
@@ -18,6 +19,7 @@ export const commands = {
   link,
   import: importCommand,
   export: exportCommand,
+  "r/": reddit,
 };
 
 export const commandList = Object.keys(commands);
