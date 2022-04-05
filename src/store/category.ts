@@ -68,7 +68,7 @@ export const useCategoryStore = defineStore("category", {
     },
     addLink(category: string, title: string, link: string) {
       if (category in this.categories) {
-        this.categories[category].links[title] = preptendHttp(link);
+        this.categories[category].links[title] = prependHttp(link);
       }
     },
     removeLink(category: string, title: string) {

@@ -17,6 +17,8 @@
           @keyup.delete="backspace"
           v-model.trim="query"
           @keyup.enter="submit"
+          @keyup.up="prevCommand"
+          @keyup.down="nextCommand"
         />
         <input ref="file" hidden type="file" @change="importSettings" />
       </div>
@@ -38,6 +40,19 @@ const command = ref("");
 const query = ref("");
 const file = ref<HTMLElement | null>(null);
 
+function nextCommand() {
+  const { cmd, q } = terminalStore.next;
+  console.log(cmd, q);
+  command.value = cmd;
+  query.value = q;
+}
+function prevCommand() {
+  const { cmd, q } = terminalStore.prev;
+  command.value = cmd;
+  query.value = q;
+  console.log(cmd, q);
+}
+
 function submit() {
   // Submit behavior changes for file imports (whether it's a JSON for settings or an image)
   if (command.value === "import") {
@@ -49,6 +64,7 @@ function submit() {
   processCommand(command.value, query.value);
   command.value = "";
   query.value = "";
+  terminalStore.historyIndex = 0;
 }
 
 function backspace() {
