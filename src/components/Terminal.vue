@@ -9,7 +9,7 @@
           <div class="text-gruvbox-dark-red-1 flex-none" v-if="command">
             {{ command }}
           </div>
-          <div class="text-gruvbox-dark-blue-2 flex-none" v-if="subcommand">
+          <div class="text-gruvbox-dark-blue-1 flex-none" v-if="subcommand">
             {{ subcommand }}
           </div>
         </div>
@@ -22,6 +22,8 @@
           @keydown.delete="store.backspace"
           v-model="query"
           @keyup.enter="submit"
+          @keyup.up="store.prev"
+          @keyup.down="store.next"
         />
         <input ref="file" hidden type="file" @change="importSettings" />
       </div>

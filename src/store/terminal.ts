@@ -13,37 +13,45 @@ export const useTerminalStore = defineStore("terminal", {
       historySize: persistedState.terminal?.historySize
         ? persistedState.terminal.historySize
         : 1000,
-      historyIndex: 0,
+      historyIndex: -1,
       query: "",
       command: "",
       subcommand: "",
     };
   },
-  getters: {
-    next(state) {
-      if (state.historyIndex === 0) {
-        return { command: "", params: "" };
-      }
-      state.historyIndex--;
-      return state.history[state.historyIndex];
-    },
-    prev(state) {
-      if (state.historyIndex === state.history.length - 1) {
-        return { command: "", params: "" };
-      }
-      state.historyIndex++;
-      return state.history[state.historyIndex];
-    },
-  },
   actions: {
+    next() {
+      if (this.historyIndex === -1) {
+        this.command = "";
+        this.subcommand = "";
+        this.query = "";
+      } else {
+        this.historyIndex--;
+        const cmd = this.history[this.historyIndex];
+        this.command = cmd.command;
+        this.subcommand = cmd.subcommand;
+        this.query = " " + cmd.query;
+      }
+    },
+    prev() {
+      if (this.historyIndex === this.history.length) {
+        // If we reach the top of the history. Let's just leave it as is.
+      } else {
+        this.historyIndex++;
+        const cmd = this.history[this.historyIndex];
+        this.command = cmd.command;
+        this.subcommand = cmd.subcommand;
+        this.query = " " + cmd.query;
+      }
+    },
     setTerminal(settings) {
       this.PS1 = settings.PS1;
     },
     setPS1(PS1: string) {
       this.PS1 = PS1;
     },
-    addCommand(command, subcommand, params) {
-      this.history.unshift({ command, subcommand, params });
+    addCommand(command, subcommand, query) {
+      this.history.unshift({ command, subcommand, query });
       if (this.history.length > this.historySize) {
         // TODO Should we change this to just take the slice of the last histSize number of elements?
         // Currently this would break if someone were to inject more history. It'd stay that size.
