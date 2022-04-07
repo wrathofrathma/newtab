@@ -26,4 +26,8 @@ import { storeToRefs } from "pinia";
 
 const store = useCategoryStore();
 const categories = storeToRefs(store).categories;
+// TODO Fix scaling / styling
+// TODO ADd maximium number of categories? MAke them btiches wrap?
+// TODO Fix the favicon
+// TODO Add theme support
 </script>

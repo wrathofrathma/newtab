@@ -1,10 +1,10 @@
-import { useCategoryStore } from "../store/category";
-import pinia from "../store";
+import { useCategoryStore } from "../../store/category";
+import pinia from "../../store";
 
 const store = useCategoryStore(pinia);
 
 export default {
-  action: (query: string) => {
+  action: (query: string, subcommand: string = "") => {
     const content = JSON.stringify(pinia.state.value);
     const file = new File([content], "settings.json", {
       type: "application/json",

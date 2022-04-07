@@ -1,15 +1,11 @@
-import { useCategoryStore } from "../store/category";
-import pinia from "../store";
+import { useCategoryStore } from "../../store/category";
+import pinia from "../../store";
 
 const store = useCategoryStore(pinia);
 
 const subcommands = {
   add: {
     action: (query: string) => {
-      // This total query should look like
-      // link add category_name link_name link_url
-      // What's passed in should be
-      // category_name link_name link_url
       const split = query.split(" ");
       // If we don't have at least 3, it won't work
       if (split.length < 3) {
@@ -52,18 +48,15 @@ const subcommands = {
 };
 
 export default {
-  action: (query: string) => {
+  action: (query: string, subcommand: string) => {
     const split = query.split(" ");
 
-    if (split.length < 2) {
+    if (!subcommand) {
       return;
     }
 
-    const subcommand = split[0];
-    const q = query.substring(subcommand.length + 1);
-
     if (subcommand in subcommands) {
-      subcommands[subcommand].action(q);
+      subcommands[subcommand].action(query);
     }
   },
   description: "Modifies the links in a category.",

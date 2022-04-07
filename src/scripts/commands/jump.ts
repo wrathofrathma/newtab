@@ -6,4 +6,5 @@ export default {
     window.location.href = location;
   },
   description: "Go to the link",
+  subcommands: {},
 };

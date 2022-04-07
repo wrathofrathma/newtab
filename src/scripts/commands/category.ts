@@ -1,5 +1,5 @@
-import { useCategoryStore } from "../store/category";
-import pinia from "../store";
+import { useCategoryStore } from "../../store/category";
+import pinia from "../../store";
 
 const store = useCategoryStore(pinia);
 
@@ -23,18 +23,15 @@ const subcommands = {
 };
 
 export default {
-  action: (query: string) => {
+  action: (query: string, subcommand: string = "") => {
     const split = query.split(" ");
-    // If there are less than two, we don't have a subcommand + proper query
-    if (split.length < 2) {
+
+    if (!subcommand) {
       return;
     }
 
-    const subcommand = split[0];
-    const q = query.substring(subcommand.length + 1);
-
     if (subcommand in subcommands) {
-      subcommands[subcommand].action(q);
+      subcommands[subcommand].action(query);
     }
   },
   description: "Modifies the categories of links",

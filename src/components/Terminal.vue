@@ -4,21 +4,24 @@
       <div class="text-4xl">
         {{ PS1 }}
       </div>
-      <div class="flex flex-row items-center text-3xl gap-2">
-        <div class="text-gruvbox-dark-red-1 flex-none" v-if="command">
-          {{ command }}
+      <div class="flex flex-row items-center text-3xl gap-0">
+        <div class="gap-2 flex flex-row">
+          <div class="text-gruvbox-dark-red-1 flex-none" v-if="command">
+            {{ command }}
+          </div>
+          <div class="text-gruvbox-dark-blue-2 flex-none" v-if="subcommand">
+            {{ subcommand }}
+          </div>
         </div>
         <input
           autofocus
           spellcheck="false"
           type="text"
           class="focus:outline-none bg-transparent"
-          @input="oninput"
-          @keyup.delete="backspace"
-          v-model.trim="query"
+          @input="parseCommand"
+          @keydown.delete="store.backspace"
+          v-model="query"
           @keyup.enter="submit"
-          @keyup.up="prevCommand"
-          @keyup.down="nextCommand"
         />
         <input ref="file" hidden type="file" @change="importSettings" />
       </div>
@@ -29,29 +32,21 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useTerminalStore } from "../store/terminal";
-import { processCommand, commandList } from "../composables/terminal";
+import { processCommand, parseCommand } from "../scripts/terminal";
 import { importSettings } from "../composables/settings";
 import { storeToRefs } from "pinia";
 
-const terminalStore = useTerminalStore();
+// TODO Make this component a contenteditable instead. It'll be more seamless.
+// TODO Support bash style PS1 settings
+// TODO Support fuzzy finding through history
+const store = useTerminalStore();
 
-const PS1 = storeToRefs(terminalStore).PS1;
-const command = ref("");
-const query = ref("");
+const PS1 = storeToRefs(store).PS1;
+const command = storeToRefs(store).command;
+const subcommand = storeToRefs(store).subcommand;
+const query = storeToRefs(store).query;
+
 const file = ref<HTMLElement | null>(null);
-
-function nextCommand() {
-  const { cmd, q } = terminalStore.next;
-  console.log(cmd, q);
-  command.value = cmd;
-  query.value = q;
-}
-function prevCommand() {
-  const { cmd, q } = terminalStore.prev;
-  command.value = cmd;
-  query.value = q;
-  console.log(cmd, q);
-}
 
 function submit() {
   // Submit behavior changes for file imports (whether it's a JSON for settings or an image)
@@ -61,26 +56,6 @@ function submit() {
     }
   }
 
-  processCommand(command.value, query.value);
-  command.value = "";
-  query.value = "";
-  terminalStore.historyIndex = 0;
-}
-
-function backspace() {
-  if (query.value.length === 0) {
-    query.value = command.value.substring(0, command.value.length);
-    command.value = "";
-  }
-}
-
-function oninput(input) {
-  query.value = query.value.trimStart();
-  const splitValue = query.value.split(" ");
-
-  if (!command.value && commandList.includes(splitValue[0])) {
-    query.value = query.value.substring(splitValue[0].length + 1);
-    command.value = splitValue[0];
-  }
+  store.submit();
 }
 </script>
