@@ -15,8 +15,8 @@ dist-ssr
 *.local
 
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
+.vscode/
+agents/
 .idea
 .DS_Store
 *.suo
@@ -29,3 +29,4 @@ dist-ssr
 .dolt/
 *.db
 .beads-credential-key
+.beads/
