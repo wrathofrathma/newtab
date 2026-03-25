@@ -1,22 +1,36 @@
-import { ref } from "vue";
 import { pinia } from "../store";
+import { useCategoryStore } from "../store/category";
+import { useSettingsStore } from "../store/settings";
 import { useTerminalStore } from "../store/terminal";
-import google from "./commands/google";
-import duckduckgo from "./commands/duckduckgo";
-import youtube from "./commands/youtube";
+import { validateSearchTargets } from "./searchTargets";
 import amazon from "./commands/amazon";
+import chatgpt from "./commands/chatgpt";
 import category from "./commands/category";
-import link from "./commands/link";
-import importCommand from "./commands/import";
+import clear from "./commands/clear";
+import duckduckgo from "./commands/duckduckgo";
+import ebay from "./commands/ebay";
+import edit from "./commands/edit";
 import exportCommand from "./commands/export";
-import reddit from "./commands/reddit";
-import ps1 from "./commands/ps1";
+import github from "./commands/github";
+import help from "./commands/help";
 import history from "./commands/history";
+import imdb from "./commands/imdb";
+import importCommand from "./commands/import";
 import jump from "./commands/jump";
+import link from "./commands/link";
+import google from "./commands/google";
+import ps1 from "./commands/ps1";
+import reddit from "./commands/reddit";
+import settings from "./commands/settings";
+import stackoverflow from "./commands/stackoverflow";
+import theme from "./commands/theme";
+import twitter from "./commands/twitter";
+import urbandictionary from "./commands/urbandictionary";
+import wikipedia from "./commands/wikipedia";
+import youtube from "./commands/youtube";
 
-// TODO Should we just make a command class? How can we enforce this structure.
 export type Command = {
-  action: (query: string, subcomand: string) => void;
+  action: (query: string, subcommand: string) => void;
   description: string;
   subcommands: {
     [key: string]: {
@@ -26,11 +40,40 @@ export type Command = {
   };
 };
 
+export type ParsedInput = {
+  raw: string;
+  command: string;
+  subcommand: string;
+  query: string;
+  isKnownCommand: boolean;
+};
+
+export type HistoryEntry = {
+  command: string;
+  subcommand: string;
+  query: string;
+};
+
 export const commands: { [key: string]: Command } = {
   google,
   duckduckgo,
+  ddg: duckduckgo,
   youtube,
   amazon,
+  github,
+  gh: github,
+  stackoverflow,
+  so: stackoverflow,
+  wikipedia,
+  wiki: wikipedia,
+  twitter,
+  x: twitter,
+  imdb,
+  ebay,
+  urbandictionary,
+  chatgpt,
+  gpt: chatgpt,
+  clear,
   category,
   link,
   import: importCommand,
@@ -38,92 +81,344 @@ export const commands: { [key: string]: Command } = {
   "r/": reddit,
   ps1,
   history,
+  help,
+  settings,
+  theme,
+  edit,
   jump,
   go: jump,
-  // TODO make a default command setting
-  // TODO make a play command to handle youtube / lofi beats
-  // TODO Consider alias command. It'd require another rewrite of how commands are handled...
 };
+
+const searchTargetValidationErrors = validateSearchTargets();
+
+if (searchTargetValidationErrors.length > 0) {
+  throw new Error(
+    `Invalid search target config:\n${searchTargetValidationErrors.join("\n")}`,
+  );
+}
 
 export const commandList = Object.keys(commands);
 
-export function parseCommand() {
-  const store = useTerminalStore(pinia);
-  // Detection rules
-  // Everything before the first space is the command (or argument to default command)
-  // Attempt to match the command against
-  // - Everything before space
-  // - command value(if matched) + everything before space in the query if no space was entered.
+function splitFirstToken(input: string): { token: string; rest: string } {
+  const trimmed = input.trimStart();
 
-  // This should split the string into ['google', 'hello', 'world'] style arrays. The filter removes empty strings from consecutive or leading spaces.
-  const split = store.query.split(" ").filter((item) => item);
-
-  // If store.command has a value & the next value is not a space, we need to check if it's part of a longer command name.
-  if (store.command && store.query.length > 0 && store.query[0] !== " ") {
-    // Are we extending a subcommand?
-    if (store.subcommand) {
-      store.query = " " + store.subcommand + store.query;
-      store.subcommand = "";
-    } else {
-      store.query = store.command + store.query;
-      store.command = "";
-    }
-  }
-  // If store.command does not have a value, we should trim the whitespace at the beginning and check everything before the first space
-  else if (!store.command && commandList.includes(split[0])) {
-    // Let's set the query to everything after the command. We can ignore duplicate whitespaces by using our split from earlier, slicing & joining the array.
-    var q = split.slice(1); // Everything after the command
-
-    // If there is a follow up word, we know there was a space, so we should add it back in.
-    store.query = q.length > 0 ? " " + q.join(" ") : q.join(" ");
-
-    store.command = split[0];
+  if (!trimmed) {
+    return { token: "", rest: "" };
   }
 
-  // We should attempt to parse subcommands if we have value in command
-  if (store.command) {
-    parseSubcommand();
+  const firstSpace = trimmed.search(/\s/);
+
+  if (firstSpace === -1) {
+    return { token: trimmed, rest: "" };
   }
+
+  return {
+    token: trimmed.slice(0, firstSpace),
+    rest: trimmed.slice(firstSpace + 1).trimStart(),
+  };
 }
 
-function parseSubcommand() {
-  const store = useTerminalStore(pinia);
-  // Fetch subcommand list from the given command.
-  const subcommandList = Object.keys(commands[store.command].subcommands);
+export function parseInput(raw: string): ParsedInput {
+  const normalized = raw.trim();
 
-  // This should split the string into ['google', 'hello', 'world'] style arrays. The filter removes empty strings from consecutive or leading spaces.
-  const split = store.query.split(" ").filter((item) => item);
-
-  // If store.subcommand has a value & the next value is not a space, we need to check if it's part of a longer subcommand name.
-  if (store.subcommand && store.query.length > 0 && store.query[0] !== " ") {
-    // If the first thing isn't a space, then we should continue attemping to match.
-    store.query = store.subcommand + store.query;
-    store.subcommand = "";
+  if (!normalized) {
+    return {
+      raw: "",
+      command: "",
+      subcommand: "",
+      query: "",
+      isKnownCommand: false,
+    };
   }
-  // If store.subcommand does not have a value, we should trim the whitespace at the beginning and check everything before the first space
-  else if (subcommandList.includes(split[0])) {
-    // Let's set the query to everything after the command. We can ignore duplicate whitespaces by using our split from earlier, slicing & joining the array.
-    var q = split.slice(1); // Everything after the command
 
-    // If there is a follow up word, we know there was a space, so we should add it back in.
-    store.query = q.length > 0 ? " " + q.join(" ") : q.join(" ");
+  const { token: command, rest: afterCommand } = splitFirstToken(normalized);
+  const commandDef = commands[command];
 
-    store.subcommand = split[0];
+  if (!commandDef) {
+    return {
+      raw: normalized,
+      command: "",
+      subcommand: "",
+      query: normalized,
+      isKnownCommand: false,
+    };
   }
+
+  const { token: possibleSubcommand, rest: afterSubcommand } =
+    splitFirstToken(afterCommand);
+
+  if (possibleSubcommand && possibleSubcommand in commandDef.subcommands) {
+    return {
+      raw: normalized,
+      command,
+      subcommand: possibleSubcommand,
+      query: afterSubcommand,
+      isKnownCommand: true,
+    };
+  }
+
+  return {
+    raw: normalized,
+    command,
+    subcommand: "",
+    query: afterCommand,
+    isKnownCommand: true,
+  };
+}
+
+export function formatHistoryEntry(entry: HistoryEntry): string {
+  return [entry.command, entry.subcommand, entry.query]
+    .filter(Boolean)
+    .join(" ");
+}
+
+export function getAutocompleteSuggestions(raw: string): string[] {
+  const trimmedStart = raw.trimStart();
+
+  if (!trimmedStart) {
+    return commandList.slice().sort((a, b) => a.localeCompare(b));
+  }
+
+  const hasTrailingSpace = /\s$/.test(trimmedStart);
+  const tokens = trimmedStart.split(/\s+/).filter((token) => token.length > 0);
+
+  if (tokens.length === 1 && !hasTrailingSpace) {
+    const query = tokens[0].toLowerCase();
+    return commandList
+      .filter((name) => name.toLowerCase().startsWith(query))
+      .sort((a, b) => a.localeCompare(b));
+  }
+
+  const command = tokens[0];
+  const commandDef = commands[command];
+
+  if (!commandDef) {
+    return [];
+  }
+
+  const subcommands = Object.keys(commandDef.subcommands);
+
+  if (subcommands.length === 0) {
+    return [];
+  }
+
+  const subcommandToken = hasTrailingSpace ? "" : (tokens[1] ?? "");
+
+  const needle = subcommandToken.toLowerCase();
+
+  if (tokens.length > 2 || (tokens.length === 2 && hasTrailingSpace)) {
+    if (
+      command === "category" &&
+      (tokens[1] === "edit" || tokens[1] === "rm")
+    ) {
+      const categoryStore = useCategoryStore(pinia);
+      const categoryNames = Object.keys(categoryStore.categories).sort((a, b) =>
+        a.localeCompare(b),
+      );
+
+      if (tokens.length === 2 && hasTrailingSpace) {
+        return categoryNames;
+      }
+
+      const partial = tokens[2] ?? "";
+      return categoryNames.filter((name) =>
+        name.toLowerCase().startsWith(partial.toLowerCase()),
+      );
+    }
+
+    if (command === "link" && (tokens[1] === "edit" || tokens[1] === "rm")) {
+      const categoryStore = useCategoryStore(pinia);
+      const categoryNames = Object.keys(categoryStore.categories).sort((a, b) =>
+        a.localeCompare(b),
+      );
+
+      if (tokens.length === 2 && hasTrailingSpace) {
+        return categoryNames;
+      }
+
+      if (tokens.length === 3 && !hasTrailingSpace) {
+        const partialCategory = tokens[2] ?? "";
+        return categoryNames.filter((name) =>
+          name.toLowerCase().startsWith(partialCategory.toLowerCase()),
+        );
+      }
+
+      const category = tokens[2] ?? "";
+      const links = categoryStore.categories[category]?.links;
+
+      if (!links) {
+        return [];
+      }
+
+      const titles = Object.keys(links).sort((a, b) => a.localeCompare(b));
+
+      if (tokens.length === 3 && hasTrailingSpace) {
+        return titles;
+      }
+
+      const partialTitle = hasTrailingSpace ? "" : tokens.slice(3).join(" ");
+
+      return titles.filter((title) =>
+        title.toLowerCase().startsWith(partialTitle.toLowerCase()),
+      );
+    }
+
+    return [];
+  }
+
+  return subcommands
+    .filter((name) => name.toLowerCase().startsWith(needle))
+    .sort((a, b) => a.localeCompare(b));
+}
+
+export function applySuggestion(raw: string, suggestion: string): string {
+  const trimmedStart = raw.trimStart();
+
+  if (!trimmedStart) {
+    return `${suggestion} `;
+  }
+
+  const hasTrailingSpace = /\s$/.test(trimmedStart);
+  const tokens = trimmedStart.split(/\s+/).filter((token) => token.length > 0);
+
+  if (tokens.length <= 1 && !hasTrailingSpace) {
+    return `${suggestion} `;
+  }
+
+  if (tokens.length === 1 && hasTrailingSpace) {
+    return `${tokens[0]} ${suggestion} `;
+  }
+
+  if (tokens.length === 2 && !hasTrailingSpace) {
+    return `${tokens[0]} ${suggestion} `;
+  }
+
+  if (tokens[0] === "category" && tokens[1] === "edit") {
+    if (tokens.length === 2 && hasTrailingSpace) {
+      return `category edit ${suggestion}`;
+    }
+
+    if (tokens.length >= 3) {
+      return `category edit ${suggestion}`;
+    }
+  }
+
+  if (tokens[0] === "category" && tokens[1] === "rm") {
+    if (tokens.length === 2 && hasTrailingSpace) {
+      return `category rm ${suggestion}`;
+    }
+
+    if (tokens.length >= 3) {
+      return `category rm ${suggestion}`;
+    }
+  }
+
+  if (tokens[0] === "link" && tokens[1] === "edit") {
+    if (tokens.length === 2 && hasTrailingSpace) {
+      return `link edit ${suggestion} `;
+    }
+
+    if (tokens.length === 3 && !hasTrailingSpace) {
+      return `link edit ${suggestion} `;
+    }
+
+    if (tokens.length >= 3) {
+      const category = tokens[2] ?? "";
+
+      if (!category) {
+        return raw;
+      }
+
+      return `link edit ${category} ${suggestion}`;
+    }
+  }
+
+  if (tokens[0] === "link" && tokens[1] === "rm") {
+    if (tokens.length === 2 && hasTrailingSpace) {
+      return `link rm ${suggestion} `;
+    }
+
+    if (tokens.length === 3 && !hasTrailingSpace) {
+      return `link rm ${suggestion} `;
+    }
+
+    if (tokens.length >= 3) {
+      const category = tokens[2] ?? "";
+
+      if (!category) {
+        return raw;
+      }
+
+      return `link rm ${category} ${suggestion}`;
+    }
+  }
+
+  return raw;
 }
 
 export function processCommand(
   command: string,
   subcommand: string,
-  input: string
+  input: string,
 ) {
-  // If the command is in our command list, then we'll use that. Otherwise default search
-  if (commandList.includes(command)) {
-    // Add command to history
-    const store = useTerminalStore(pinia);
-    store.addCommand(command, subcommand, input);
+  const store = useTerminalStore(pinia);
 
-    // Execute command
+  if (commandList.includes(command)) {
+    store.addCommand(command, subcommand, input);
     commands[command].action(input, subcommand);
   }
+}
+
+export function processRawInput(raw: string) {
+  const parsed = parseInput(raw);
+
+  if (!parsed.raw) {
+    return;
+  }
+
+  if (parsed.isKnownCommand && parsed.command) {
+    processCommand(parsed.command, parsed.subcommand, parsed.query);
+    return;
+  }
+
+  const maybeHttp = parsed.query.trim();
+
+  if (maybeHttp.startsWith("http://") || maybeHttp.startsWith("https://")) {
+    const store = useTerminalStore(pinia);
+
+    try {
+      const directUrl = new URL(maybeHttp);
+
+      if (directUrl.protocol === "http:" || directUrl.protocol === "https:") {
+        store.addCommand("jump", "", directUrl.toString());
+        window.location.href = directUrl.toString();
+        return;
+      }
+    } catch {
+      try {
+        const encodedUrl = new URL(encodeURI(maybeHttp));
+
+        if (
+          encodedUrl.protocol === "http:" ||
+          encodedUrl.protocol === "https:"
+        ) {
+          store.addCommand("jump", "", encodedUrl.toString());
+          window.location.href = encodedUrl.toString();
+          return;
+        }
+      } catch {
+        // fall through to search fallback
+      }
+    }
+  }
+
+  const settingsStore = useSettingsStore(pinia);
+  const store = useTerminalStore(pinia);
+  const fallback =
+    settingsStore.searchEngine in commands
+      ? settingsStore.searchEngine
+      : "google";
+
+  store.addCommand(fallback, "", parsed.query);
+  commands[fallback].action(parsed.query, "");
 }

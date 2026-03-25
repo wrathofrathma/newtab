@@ -1,7 +1,9 @@
 import { useCategoryStore } from "../../store/category";
 import pinia from "../../store";
+import { useUiStore } from "../../store/ui";
 
 const store = useCategoryStore(pinia);
+const uiStore = useUiStore(pinia);
 
 const subcommands = {
   add: {
@@ -19,6 +21,18 @@ const subcommands = {
       store.removeCategory(category);
     },
     description: "Removes a category of links",
+  },
+  edit: {
+    action: (query: string) => {
+      const name = query.trim();
+
+      if (!name || !(name in store.categories)) {
+        return;
+      }
+
+      uiStore.openCategoryEdit({ name });
+    },
+    description: "Opens category rename modal",
   },
 };
 

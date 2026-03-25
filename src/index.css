@@ -1,3 +1,81 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@source "../index.html";
+@source "./**/*.{vue,js,ts,jsx,tsx}";
+
+@theme {
+  --font-mono: "Fira Code", monospace;
+
+  --color-gruvbox-dark-bg-0: #282828;
+  --color-gruvbox-dark-bg-1: #3c3836;
+  --color-gruvbox-dark-bg-2: #504945;
+  --color-gruvbox-dark-bg-3: #665c54;
+  --color-gruvbox-dark-bg-4: #7c6f64;
+  --color-gruvbox-dark-bg-h: #1d2021;
+  --color-gruvbox-dark-bg-s: #32302f;
+
+  --color-gruvbox-dark-fg-0: #fbf1c7;
+  --color-gruvbox-dark-fg-1: #ebdbb2;
+  --color-gruvbox-dark-fg-2: #d5c4a1;
+  --color-gruvbox-dark-fg-3: #bdae93;
+  --color-gruvbox-dark-fg-4: #a89984;
+
+  --color-gruvbox-dark-red-0: #cc241d;
+  --color-gruvbox-dark-red-1: #fb4934;
+
+  --color-gruvbox-dark-green-0: #98971a;
+  --color-gruvbox-dark-green-1: #b8bb26;
+
+  --color-gruvbox-dark-yellow-0: #d79921;
+  --color-gruvbox-dark-yellow-1: #fabd2f;
+
+  --color-gruvbox-dark-blue-0: #458588;
+  --color-gruvbox-dark-blue-1: #83a598;
+  --color-gruvbox-dark-blue-2: #8f9191;
+
+  --color-gruvbox-dark-purple-0: #b16286;
+  --color-gruvbox-dark-purple-1: #d3869b;
+
+  --color-gruvbox-dark-aqua-0: #689d6a;
+  --color-gruvbox-dark-aqua-1: #8ec07c;
+
+  --color-gruvbox-dark-gray-0: #a89984;
+  --color-gruvbox-dark-gray-1: #928374;
+
+  --color-gruvbox-dark-orange-0: #d65d0e;
+  --color-gruvbox-dark-orange-1: #fe8019;
+}
+
+:root {
+  --nt-font-family: "Fira Code", monospace;
+  --nt-surface-canvas: #282828;
+  --nt-surface-canvas-strong: #1d2021;
+  --nt-surface-panel: #3c3836;
+  --nt-surface-panel-muted: #32302f;
+  --nt-surface-panel-strong: #504945;
+  --nt-surface-panel-subtle: #665c54;
+  --nt-surface-border: #504945;
+  --nt-surface-border-strong: #7c6f64;
+  --nt-text-primary: #ebdbb2;
+  --nt-text-secondary: #d5c4a1;
+  --nt-text-muted: #bdae93;
+  --nt-text-subtle: #a89984;
+  --nt-text-inverse: #fbf1c7;
+  --nt-accent-red: #cc241d;
+  --nt-accent-red-bright: #fb4934;
+  --nt-accent-green: #98971a;
+  --nt-accent-green-bright: #b8bb26;
+  --nt-accent-yellow: #d79921;
+  --nt-accent-yellow-bright: #fabd2f;
+  --nt-accent-blue: #458588;
+  --nt-accent-blue-bright: #83a598;
+  --nt-accent-blue-muted: #8f9191;
+  --nt-accent-purple: #b16286;
+  --nt-accent-purple-bright: #d3869b;
+  --nt-accent-aqua: #689d6a;
+  --nt-accent-aqua-bright: #8ec07c;
+  --nt-accent-orange: #d65d0e;
+  --nt-accent-orange-bright: #fe8019;
+  --nt-accent-gray: #928374;
+  --nt-accent-gray-bright: #a89984;
+}

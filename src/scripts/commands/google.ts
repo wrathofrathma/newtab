@@ -1,8 +1,8 @@
+import { openSearchTarget } from "./search";
+
 export default {
   action: (query: string, subcommand: string = "") => {
-    const location =
-      "https://www.google.com/search?q=" + query.replace(" ", "+");
-    window.location.href = location;
+    openSearchTarget("google", query);
   },
   description: "Google search engine",
   subcommands: {},

@@ -1,5 +1,6 @@
 import { pinia } from "../store";
 import { useCategoryStore } from "../store/category";
+import { useSettingsStore } from "../store/settings";
 import { useTerminalStore } from "../store/terminal";
 
 /**
@@ -19,14 +20,30 @@ export function importSettings(e) {
         const json = JSON.parse(reader.result as string);
         setSettings(json);
       } catch (e) {
-        // TODO - We should set some sort of error in the future terminal
         console.log(e);
       }
     },
-    false
+    false,
   );
 
   reader.readAsText(file);
+}
+
+export function exportSettings() {
+  const content = JSON.stringify(pinia.state.value);
+  const file = new File([content], "settings.json", {
+    type: "application/json",
+  });
+
+  const link = document.createElement("a");
+  const url = URL.createObjectURL(file);
+
+  link.href = url;
+  link.setAttribute("download", "settings.json");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(url);
 }
 
 type Settings = {};
@@ -38,10 +55,21 @@ type Settings = {};
  */
 function setSettings(settings) {
   const categoryStore = useCategoryStore(pinia);
+  const settingsStore = useSettingsStore(pinia);
   const terminalStore = useTerminalStore(pinia);
   const categorySettings = settings.category;
+  const appSettings = settings.settings;
   const terminalSettings = settings.terminal;
 
-  categoryStore.setCategory(categorySettings);
-  terminalStore.setTerminal(terminalSettings);
+  if (categorySettings) {
+    categoryStore.setCategory(categorySettings);
+  }
+
+  if (appSettings) {
+    settingsStore.setSettings(appSettings);
+  }
+
+  if (terminalSettings) {
+    terminalStore.setTerminal(terminalSettings);
+  }
 }

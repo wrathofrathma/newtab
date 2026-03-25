@@ -1,10 +1,10 @@
 import { pinia } from "../../store";
-import { useTerminalStore } from "../../store/terminal";
+import { useUiStore } from "../../store/ui";
 
 export default {
   action: (query: string, subcommand: string = "") => {
-    const store = useTerminalStore(pinia);
-    console.log(store.history);
+    const uiStore = useUiStore(pinia);
+    uiStore.openHistory();
   },
   description: "View the command history",
   subcommands: {},

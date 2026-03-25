@@ -4,8 +4,14 @@
   "version": "1.0",
   "description": "Minimal new tab extension",
   "author": "Rathma",
+  "icons": {
+    "16": "logo.png",
+    "32": "logo.png",
+    "48": "logo.png",
+    "128": "logo.png"
+  },
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
-  "permissions": ["storage"]
+  "permissions": ["storage", "clipboardWrite"]
 }

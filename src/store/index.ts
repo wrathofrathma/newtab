@@ -7,9 +7,13 @@ const pinia = createPinia();
 watch(
   pinia.state,
   (state) => {
-    localStorage.setItem("piniaState", JSON.stringify(state));
+    try {
+      localStorage.setItem("piniaState", JSON.stringify(state));
+    } catch (e) {
+      console.warn("Failed to persist pinia state", e);
+    }
   },
-  { deep: true }
+  { deep: true },
 );
 
 // The persisted state

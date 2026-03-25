@@ -1,33 +1,58 @@
 <template>
-  <default class="h-screen">
-    <template #image>
-      <img alt="Vue logo" src="@/assets/cat.gif" class="w-1/3" />
-    </template>
+  <Default class="h-screen">
+    <img
+      alt="Vue logo"
+      :src="heroImage || defaultHeroImage"
+      class="h-auto w-[clamp(12rem,28vw,26rem)] object-contain"
+    />
 
     <div class="flex flex-col p-24 gap-16">
+      <Clock v-if="showClock" />
       <terminal></terminal>
       <div class="flex flex-row gap-20">
         <link-tree
-          v-for="(category, index) in categories"
-          :title="index"
-          :category="category"
+          v-for="name in categoryList"
+          :key="name"
+          :title="name"
+          :category="categories[name]"
         ></link-tree>
       </div>
     </div>
-  </default>
+
+    <HelpModal v-if="activeModal === 'help'" />
+    <HistoryModal v-if="activeModal === 'history'" />
+    <SettingsModal v-if="activeModal === 'settings'" />
+    <LinkAddModal v-if="activeModal === 'linkAdd'" />
+    <LinkEditModal v-if="activeModal === 'linkEdit'" />
+    <CategoryEditModal v-if="activeModal === 'categoryEdit'" />
+    <EditLayoutModal v-if="activeModal === 'editLayout'" />
+  </Default>
 </template>
 
 <script setup lang="ts">
+import defaultHeroImage from "@/assets/cat.gif";
+import CategoryEditModal from "@/components/CategoryEditModal.vue";
+import EditLayoutModal from "@/components/EditLayoutModal.vue";
+import HistoryModal from "@/components/HistoryModal.vue";
+import LinkAddModal from "@/components/LinkAddModal.vue";
+import LinkEditModal from "@/components/LinkEditModal.vue";
+import SettingsModal from "@/components/SettingsModal.vue";
 import Default from "@/layouts/Default.vue";
+import HelpModal from "@/components/HelpModal.vue";
 import LinkTree from "@/components/LinkTree.vue";
 import Terminal from "@/components/Terminal.vue";
+import Clock from "@/components/Clock.vue";
 import { useCategoryStore } from "../store/category";
+import { useSettingsStore } from "../store/settings";
+import { useUiStore } from "../store/ui";
 import { storeToRefs } from "pinia";
 
 const store = useCategoryStore();
+const settingsStore = useSettingsStore();
+const uiStore = useUiStore();
 const categories = storeToRefs(store).categories;
-// TODO Fix scaling / styling
-// TODO ADd maximium number of categories? MAke them btiches wrap?
-// TODO Fix the favicon
-// TODO Add theme support
+const categoryList = storeToRefs(store).categoryList;
+const showClock = storeToRefs(settingsStore).showClock;
+const heroImage = storeToRefs(settingsStore).heroImage;
+const activeModal = storeToRefs(uiStore).activeModal;
 </script>

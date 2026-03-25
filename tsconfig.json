@@ -3,7 +3,7 @@
     "target": "esnext",
     "useDefineForClassFields": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "strict": true,
     "jsx": "preserve",
     "sourceMap": true,
@@ -12,6 +12,9 @@
     "esModuleInterop": true,
     "noImplicitAny": false,
     "lib": ["esnext", "dom"]
+  },
+  "vueCompilerOptions": {
+    "strictTemplates": false
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]

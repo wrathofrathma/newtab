@@ -2,29 +2,37 @@
   "name": "vue-tailwind",
   "private": true,
   "version": "0.0.0",
+  "packageManager": "pnpm@10.32.1",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
+    "build:ext": "node scripts/build-extensions.mjs all",
+    "build:ext:chrome": "node scripts/build-extensions.mjs chrome",
+    "build:ext:firefox": "node scripts/build-extensions.mjs firefox",
+    "deploy:pages": "pnpm build && wrangler pages deploy dist --project-name \"${CF_PAGES_PROJECT:-newtab}\"",
+    "deploy:pages:skip-build": "wrangler pages deploy dist --project-name \"${CF_PAGES_PROJECT:-newtab}\"",
     "preview": "vite preview",
     "prepare": "husky install"
   },
   "dependencies": {
-    "pinia": "^2.0.13",
-    "prepend-http": "^4.0.0",
-    "vue": "^3.2.25",
-    "vue-router": "4"
+    "pinia": "3.0.4",
+    "prepend-http": "4.0.0",
+    "vue": "3.5.30",
+    "vue-router": "5.0.4"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^2.3.0",
-    "autoprefixer": "^10.4.4",
-    "husky": ">=6",
-    "lint-staged": ">=10",
-    "postcss": "^8.4.12",
-    "prettier": "2.6.1",
-    "tailwindcss": "^3.0.23",
-    "typescript": "^4.5.4",
-    "vite": "^2.9.0",
-    "vue-tsc": "^0.29.8"
+    "@tailwindcss/postcss": "^4.2.2",
+    "@vitejs/plugin-vue": "6.0.5",
+    "autoprefixer": "10.4.27",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "postcss": "8.5.8",
+    "prettier": "3.8.1",
+    "tailwindcss": "4.2.2",
+    "typescript": "6.0.2",
+    "vite": "8.0.2",
+    "vue-tsc": "3.2.6",
+    "wrangler": "^4.77.0"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"

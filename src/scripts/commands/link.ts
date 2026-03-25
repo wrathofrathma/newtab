@@ -1,7 +1,9 @@
 import { useCategoryStore } from "../../store/category";
 import pinia from "../../store";
+import { useUiStore } from "../../store/ui";
 
 const store = useCategoryStore(pinia);
+const uiStore = useUiStore(pinia);
 
 const subcommands = {
   add: {
@@ -19,7 +21,7 @@ const subcommands = {
       // The title is everything starting from after the category, to just before the link
       const title = query.substring(
         category.length + 1,
-        query.length - link.length - 1
+        query.length - link.length - 1,
       );
 
       store.addLink(category, title, link);
@@ -45,13 +47,39 @@ const subcommands = {
     },
     description: "Removes a link from a category",
   },
+  edit: {
+    action: (query: string) => {
+      const split = query.split(" ").filter((part) => part.length > 0);
+
+      if (split.length < 2) {
+        return;
+      }
+
+      const category = split[0];
+      const title = query.substring(category.length + 1);
+
+      if (!(category in store.categories)) {
+        return;
+      }
+
+      if (!(title in store.categories[category].links)) {
+        return;
+      }
+
+      uiStore.openLinkEdit({ category, title });
+    },
+    description: "Opens link editor modal for an existing link",
+  },
 };
 
 export default {
   action: (query: string, subcommand: string) => {
-    const split = query.split(" ");
-
     if (!subcommand) {
+      return;
+    }
+
+    if (subcommand === "add" && !query.trim()) {
+      uiStore.openLinkAdd();
       return;
     }
 

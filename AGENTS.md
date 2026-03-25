@@ -5,7 +5,7 @@ Guidance for autonomous coding agents working in this repository.
 ## Project Snapshot
 
 - Stack: Vue 3 + TypeScript + Vite + Pinia + Tailwind CSS.
-- Package manager: Yarn is preferred (`yarn.lock` is present).
+- Package manager: pnpm is preferred (`pnpm-lock.yaml` is the source of truth).
 - App purpose: browser new-tab page with terminal-style command input and link categories.
 - Entry point: `src/main.ts`.
 - Main view: `src/views/Index.vue`.
@@ -20,17 +20,17 @@ Guidance for autonomous coding agents working in this repository.
 
 ## Setup Commands
 
-- Install dependencies: `yarn install`
-- Start dev server: `yarn dev`
-- Build for production: `yarn build`
-- Preview production build: `yarn preview`
-- Enable git hooks after install (auto-run via prepare): `yarn prepare`
+- Install dependencies: `pnpm install`
+- Start dev server: `pnpm dev`
+- Build for production: `pnpm build`
+- Preview production build: `pnpm preview`
+- Enable git hooks after install (auto-run via prepare): `pnpm prepare`
 
 ## Build / Lint / Test Commands
 
 ### Build
 
-- Full build (includes type-check): `yarn build`
+- Full build (includes type-check): `pnpm build`
 - What it runs: `vue-tsc --noEmit && vite build`
 - Use this as the main CI-style verification command.
 
@@ -54,14 +54,14 @@ Guidance for autonomous coding agents working in this repository.
 - There are no committed `*.test.*` / `*.spec.*` files at the time of writing.
 - Single-test command: not applicable right now.
 - If tests are added later, prefer exposing both:
-  - `yarn test` (full suite)
-  - `yarn test path/to/file.test.ts -t "test name"` (single test)
+  - `pnpm test` (full suite)
+  - `pnpm test path/to/file.test.ts -t "test name"` (single test)
 
 ## Recommended Verification Sequence for Agents
 
-- For any code change, a successful `yarn build` is required before considering the task complete.
+- For any code change, a successful `pnpm build` is required before considering the task complete.
 - For code changes, run formatting first: `npx prettier --write .` (or changed files).
-- Then run type/build check: `yarn build`.
+- Then run type/build check: `pnpm build`.
 - If you changed only docs/markdown, build is optional.
 - Since no tests exist, treat successful build as primary correctness gate.
 
@@ -161,6 +161,7 @@ Guidance for autonomous coding agents working in this repository.
 - If Cursor/Copilot rule files are added later, update this file to mirror them.
 
 <!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:ca08a54f -->
+
 ## Beads Issue Tracker
 
 This project uses **bd (beads)** for issue tracking. Run `bd prime` to see full workflow context and commands.
@@ -201,6 +202,7 @@ bd close <id>         # Complete work
 7. **Hand off** - Provide context for next session
 
 **CRITICAL RULES:**
+
 - Work is NOT complete until `git push` succeeds
 - NEVER stop before pushing - that leaves work stranded locally
 - NEVER say "ready to push when you are" - YOU must push
