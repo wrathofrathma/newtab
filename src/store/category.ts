@@ -16,7 +16,8 @@ type Categories = {
 const defaultRepoUrl = "https://github.com/wrathofrathma/newtab";
 const defaultReleasesUrl = `${defaultRepoUrl}/releases`;
 const defaultChromeStoreUrl = "https://chromewebstore.google.com/";
-const defaultFirefoxStoreUrl = "https://addons.mozilla.org/firefox/";
+const defaultFirefoxStoreUrl =
+  "https://addons.mozilla.org/en-US/firefox/addon/cattab/";
 
 const webDefaultCategories: Categories = {
   project: {
@@ -31,7 +32,7 @@ const webDefaultCategories: Categories = {
     links: {
       "Latest Release": defaultReleasesUrl,
       "Chrome Web Store (TBD)": defaultChromeStoreUrl,
-      "Firefox Add-ons (TBD)": defaultFirefoxStoreUrl,
+      "Firefox Add-ons": defaultFirefoxStoreUrl,
     },
   },
 };

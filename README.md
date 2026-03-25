@@ -144,7 +144,7 @@ Deploy existing `dist` only:
 pnpm deploy:pages:skip-build
 ```
 
-By default these scripts deploy to Pages project `newtab`. To override:
+By default these scripts deploy to Pages project `newtab` and force Cloudflare Pages branch `main` (production). This avoids accidental preview-only deploys when working locally on other branch names (like `master`). To override project name:
 
 ```bash
 CF_PAGES_PROJECT=my-pages-project pnpm deploy:pages

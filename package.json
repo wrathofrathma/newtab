@@ -9,8 +9,8 @@
     "build:ext": "node scripts/build-extensions.mjs all",
     "build:ext:chrome": "node scripts/build-extensions.mjs chrome",
     "build:ext:firefox": "node scripts/build-extensions.mjs firefox",
-    "deploy:pages": "pnpm build && wrangler pages deploy dist --project-name \"${CF_PAGES_PROJECT:-newtab}\"",
-    "deploy:pages:skip-build": "wrangler pages deploy dist --project-name \"${CF_PAGES_PROJECT:-newtab}\"",
+    "deploy:pages": "pnpm build && wrangler pages deploy dist --project-name \"${CF_PAGES_PROJECT:-newtab}\" --branch main",
+    "deploy:pages:skip-build": "wrangler pages deploy dist --project-name \"${CF_PAGES_PROJECT:-newtab}\" --branch main",
     "preview": "vite preview",
     "prepare": "husky install"
   },
