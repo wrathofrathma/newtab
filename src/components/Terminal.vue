@@ -12,12 +12,17 @@
         {{ PS1 }}
       </div>
 
-      <div class="relative min-w-[36rem] flex-1 text-3xl leading-none">
+      <div
+        class="relative min-w-[36rem] flex-1 overflow-hidden text-3xl leading-none"
+      >
         <div
           aria-hidden="true"
-          class="pointer-events-none absolute inset-0 truncate whitespace-pre text-3xl"
+          class="pointer-events-none absolute inset-0 overflow-hidden whitespace-pre text-3xl"
         >
-          <div class="items-baseline">
+          <div
+            class="flex items-baseline"
+            :style="{ transform: `translateX(-${inputScrollLeft}px)` }"
+          >
             <span v-if="parsed.command" class="text-gruvbox-dark-red-1">{{
               parsed.command
             }}</span>
@@ -49,6 +54,10 @@
           @input="onInput"
           @focus="onFocus"
           @blur="onBlur"
+          @click="syncInputScroll"
+          @keyup="syncInputScroll"
+          @select="syncInputScroll"
+          @scroll="syncInputScroll"
           @keydown="onKeydown"
         />
 
@@ -117,6 +126,7 @@ const terminalPanelContrast = storeToRefs(settingsStore).terminalPanelContrast;
 const inputRef = ref<HTMLInputElement | null>(null);
 const fileRef = ref<HTMLInputElement | null>(null);
 const selectedSuggestionIndex = ref(0);
+const inputScrollLeft = ref(0);
 const isInputFocused = ref(false);
 const tabCycleBaseInput = ref<string | null>(null);
 const tabCycleSuggestions = ref<SuggestionItem[] | null>(null);
@@ -235,11 +245,19 @@ function resetTabCycle() {
 
 function onFocus() {
   isInputFocused.value = true;
+  syncInputScroll();
 }
 
 function onBlur() {
   isInputFocused.value = false;
+  inputScrollLeft.value = 0;
   resetTabCycle();
+}
+
+function syncInputScroll() {
+  nextTick(() => {
+    inputScrollLeft.value = inputRef.value?.scrollLeft ?? 0;
+  });
 }
 
 function clampSuggestionIndex() {
@@ -262,6 +280,7 @@ function onInput(e: Event) {
   resetTabCycle();
   terminalStore.setRawInput(target.value);
   clampSuggestionIndex();
+  syncInputScroll();
 }
 
 function applyCurrentSuggestion() {
@@ -289,6 +308,8 @@ function applyCurrentSuggestion() {
       const cursor = inputRef.value.value.length;
       inputRef.value.setSelectionRange(cursor, cursor);
     }
+
+    syncInputScroll();
   });
 }
 
@@ -345,6 +366,7 @@ function onSubmit() {
   terminalStore.submitRawInput();
   resetTabCycle();
   selectedSuggestionIndex.value = 0;
+  inputScrollLeft.value = 0;
 }
 
 function moveCursorToEnd() {
@@ -355,6 +377,7 @@ function moveCursorToEnd() {
 
     const cursor = inputRef.value.value.length;
     inputRef.value.setSelectionRange(cursor, cursor);
+    syncInputScroll();
   });
 }
 
