@@ -90,7 +90,7 @@ Category commands:
 
 Link commands:
 
-- `link add <category> <title...> <url>`
+- `link add <category> <title...> <url>` (category autocomplete)
 - `link add` opens add-link modal
 - `link rm <category> <title...>` (category + title autocomplete)
 - `link edit <category> <title...>` opens edit-link modal (category + title autocomplete)

@@ -99,6 +99,13 @@ if (searchTargetValidationErrors.length > 0) {
 
 export const commandList = Object.keys(commands);
 
+function getCategoryNames(): string[] {
+  const categoryStore = useCategoryStore(pinia);
+  return Object.keys(categoryStore.categories).sort((a, b) =>
+    a.localeCompare(b),
+  );
+}
+
 function splitFirstToken(input: string): { token: string; rest: string } {
   const trimmed = input.trimStart();
 
@@ -211,10 +218,7 @@ export function getAutocompleteSuggestions(raw: string): string[] {
       command === "category" &&
       (tokens[1] === "edit" || tokens[1] === "rm")
     ) {
-      const categoryStore = useCategoryStore(pinia);
-      const categoryNames = Object.keys(categoryStore.categories).sort((a, b) =>
-        a.localeCompare(b),
-      );
+      const categoryNames = getCategoryNames();
 
       if (tokens.length === 2 && hasTrailingSpace) {
         return categoryNames;
@@ -226,11 +230,26 @@ export function getAutocompleteSuggestions(raw: string): string[] {
       );
     }
 
+    if (command === "link" && tokens[1] === "add") {
+      const categoryNames = getCategoryNames();
+
+      if (tokens.length === 2 && hasTrailingSpace) {
+        return categoryNames;
+      }
+
+      if (tokens.length === 3 && !hasTrailingSpace) {
+        const partialCategory = tokens[2] ?? "";
+        return categoryNames.filter((name) =>
+          name.toLowerCase().startsWith(partialCategory.toLowerCase()),
+        );
+      }
+
+      return [];
+    }
+
     if (command === "link" && (tokens[1] === "edit" || tokens[1] === "rm")) {
       const categoryStore = useCategoryStore(pinia);
-      const categoryNames = Object.keys(categoryStore.categories).sort((a, b) =>
-        a.localeCompare(b),
-      );
+      const categoryNames = getCategoryNames();
 
       if (tokens.length === 2 && hasTrailingSpace) {
         return categoryNames;
@@ -330,6 +349,16 @@ export function applySuggestion(raw: string, suggestion: string): string {
       }
 
       return `link edit ${category} ${suggestion}`;
+    }
+  }
+
+  if (tokens[0] === "link" && tokens[1] === "add") {
+    if (tokens.length === 2 && hasTrailingSpace) {
+      return `link add ${suggestion} `;
+    }
+
+    if (tokens.length === 3 && !hasTrailingSpace) {
+      return `link add ${suggestion} `;
     }
   }
 
