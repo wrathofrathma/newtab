@@ -2,7 +2,7 @@
   <div
     class="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(131,165,152,0.16),_transparent_40%),linear-gradient(180deg,var(--nt-surface-canvas-strong)_0%,var(--nt-surface-canvas)_38%,var(--nt-surface-canvas)_100%)] px-6 py-10 text-left text-gruvbox-dark-fg-1 sm:px-8 lg:px-12"
   >
-    <div class="mx-auto flex w-full max-w-4xl flex-col gap-8">
+    <div class="mx-auto flex w-full max-w-3xl flex-col gap-8">
       <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
           <p
@@ -18,8 +18,8 @@
           <p
             class="mt-3 max-w-2xl text-sm leading-6 text-gruvbox-dark-fg-3 sm:text-base"
           >
-            New Tab keeps your settings and command history in your browser so
-            the page works like a local tool, not a hosted account service.
+            CatTab is a client-side new tab page. It stores your settings in
+            your browser and does not run a user account or analytics service.
           </p>
         </div>
 
@@ -31,139 +31,70 @@
         </RouterLink>
       </div>
 
-      <div class="grid gap-4 md:grid-cols-3">
-        <section
-          class="rounded-2xl border border-gruvbox-dark-bg-2 bg-gruvbox-dark-bg-s/90 p-5 shadow-lg shadow-gruvbox-dark-bg-h/25"
-        >
-          <p
-            class="text-xs uppercase tracking-[0.24em] text-gruvbox-dark-yellow-1"
-          >
-            Stored Locally
-          </p>
-          <p class="mt-3 text-sm leading-6 text-gruvbox-dark-fg-2">
-            Theme, prompt, command history, layout, links, and optional hero
-            image stay in your browser storage on this device.
-          </p>
-        </section>
-
-        <section
-          class="rounded-2xl border border-gruvbox-dark-bg-2 bg-gruvbox-dark-bg-s/90 p-5 shadow-lg shadow-gruvbox-dark-bg-h/25"
-        >
-          <p
-            class="text-xs uppercase tracking-[0.24em] text-gruvbox-dark-blue-1"
-          >
-            No Analytics
-          </p>
-          <p class="mt-3 text-sm leading-6 text-gruvbox-dark-fg-2">
-            The hosted site does not include analytics, advertising trackers, or
-            a backend account system.
-          </p>
-        </section>
-
-        <section
-          class="rounded-2xl border border-gruvbox-dark-bg-2 bg-gruvbox-dark-bg-s/90 p-5 shadow-lg shadow-gruvbox-dark-bg-h/25"
-        >
-          <p
-            class="text-xs uppercase tracking-[0.24em] text-gruvbox-dark-purple-1"
-          >
-            User-Initiated Actions
-          </p>
-          <p class="mt-3 text-sm leading-6 text-gruvbox-dark-fg-2">
-            Clipboard writes only happen when you explicitly trigger copy
-            actions, and external sites only open when you run commands or click
-            links.
-          </p>
-        </section>
-      </div>
-
       <div
-        class="rounded-3xl border border-gruvbox-dark-bg-2 bg-gruvbox-dark-bg-s/80 p-6 shadow-2xl shadow-gruvbox-dark-bg-h/30 sm:p-8"
+        class="rounded-3xl border border-gruvbox-dark-bg-2 bg-gruvbox-dark-bg-s/85 p-6 shadow-2xl shadow-gruvbox-dark-bg-h/30 sm:p-8"
       >
         <div
-          class="grid gap-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.85fr)]"
+          class="space-y-6 text-sm leading-7 text-gruvbox-dark-fg-2 sm:text-base"
         >
-          <div class="space-y-6">
-            <section>
-              <h2 class="text-lg font-bold text-gruvbox-dark-fg-0">
-                What the app stores
-              </h2>
-              <p class="mt-2 text-sm leading-7 text-gruvbox-dark-fg-2">
-                New Tab stores settings in your browser's local storage so your
-                prompt, search engine, history, categories, links, and visual
-                preferences persist between sessions.
-              </p>
-            </section>
-
-            <section>
-              <h2 class="text-lg font-bold text-gruvbox-dark-fg-0">
-                What leaves your browser
-              </h2>
-              <p class="mt-2 text-sm leading-7 text-gruvbox-dark-fg-2">
-                Search commands and saved links navigate you to third-party
-                sites such as Google, GitHub, YouTube, Reddit, or other
-                destinations you choose. Those sites apply their own privacy
-                policies once you leave New Tab.
-              </p>
-            </section>
-
-            <section>
-              <h2 class="text-lg font-bold text-gruvbox-dark-fg-0">
-                Clipboard access
-              </h2>
-              <p class="mt-2 text-sm leading-7 text-gruvbox-dark-fg-2">
-                Clipboard write access is used only when you explicitly copy a
-                command from history. New Tab does not continuously read from or
-                monitor your clipboard.
-              </p>
-            </section>
-
-            <section>
-              <h2 class="text-lg font-bold text-gruvbox-dark-fg-0">
-                Remote code and accounts
-              </h2>
-              <p class="mt-2 text-sm leading-7 text-gruvbox-dark-fg-2">
-                The app does not load remote executable code at runtime and does
-                not require a user account, login, or cloud sync service to
-                function.
-              </p>
-            </section>
-          </div>
-
-          <aside
-            class="rounded-2xl border border-gruvbox-dark-bg-2 bg-gruvbox-dark-bg-0/60 p-5"
-          >
-            <h2
-              class="text-sm font-bold uppercase tracking-[0.24em] text-gruvbox-dark-orange-1"
-            >
-              Summary
+          <section>
+            <h2 class="text-lg font-bold text-gruvbox-dark-fg-0">
+              Information stored locally
             </h2>
-            <dl class="mt-4 space-y-4 text-sm">
-              <div>
-                <dt class="text-gruvbox-dark-fg-4">Personal accounts</dt>
-                <dd class="mt-1 text-gruvbox-dark-fg-1">Not required</dd>
-              </div>
-              <div>
-                <dt class="text-gruvbox-dark-fg-4">Analytics trackers</dt>
-                <dd class="mt-1 text-gruvbox-dark-fg-1">Not included</dd>
-              </div>
-              <div>
-                <dt class="text-gruvbox-dark-fg-4">Persistent storage</dt>
-                <dd class="mt-1 text-gruvbox-dark-fg-1">
-                  Local browser storage
-                </dd>
-              </div>
-              <div>
-                <dt class="text-gruvbox-dark-fg-4">Clipboard use</dt>
-                <dd class="mt-1 text-gruvbox-dark-fg-1">Only on copy action</dd>
-              </div>
-              <div>
-                <dt class="text-gruvbox-dark-fg-4">Third-party requests</dt>
-                <dd class="mt-1 text-gruvbox-dark-fg-1">
-                  Only when you open links or search externally
-                </dd>
-              </div>
-            </dl>
-          </aside>
+            <p class="mt-2">
+              CatTab stores settings such as theme, prompt, command history,
+              categories, links, and optional hero image data in your browser's
+              local storage on your device.
+            </p>
+          </section>
+
+          <section>
+            <h2 class="text-lg font-bold text-gruvbox-dark-fg-0">
+              Analytics and sharing
+            </h2>
+            <p class="mt-2">
+              This hosted site does not use analytics, advertising trackers, or
+              a user account system. CatTab does not sell or share your personal
+              information.
+            </p>
+          </section>
+
+          <section>
+            <h2 class="text-lg font-bold text-gruvbox-dark-fg-0">
+              Clipboard access
+            </h2>
+            <p class="mt-2">
+              Clipboard write access is used only when you explicitly trigger a
+              copy action, such as copying a command from history.
+            </p>
+          </section>
+
+          <section>
+            <h2 class="text-lg font-bold text-gruvbox-dark-fg-0">
+              External links
+            </h2>
+            <p class="mt-2">
+              CatTab can open external websites when you choose to run a search
+              or open a saved link.
+            </p>
+          </section>
+
+          <section>
+            <h2 class="text-lg font-bold text-gruvbox-dark-fg-0">Contact</h2>
+            <p class="mt-2">
+              Questions about this policy can be sent through the project
+              repository at
+              <a
+                href="https://github.com/wrathofrathma/newtab"
+                target="_blank"
+                rel="noreferrer"
+                class="font-bold text-gruvbox-dark-aqua-1 hover:text-gruvbox-dark-aqua-0"
+              >
+                github.com/wrathofrathma/newtab
+              </a>
+              .
+            </p>
+          </section>
         </div>
       </div>
     </div>
