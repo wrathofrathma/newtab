@@ -17,6 +17,15 @@
           :category="categories[name]"
         ></link-tree>
       </div>
+
+      <div v-if="showPrivacyLink" class="mt-2 flex justify-end">
+        <RouterLink
+          to="/privacy"
+          class="text-xs font-bold uppercase tracking-[0.24em] text-gruvbox-dark-fg-4 transition hover:text-gruvbox-dark-aqua-1"
+        >
+          Privacy
+        </RouterLink>
+      </div>
     </div>
 
     <HelpModal v-if="activeModal === 'help'" />
@@ -55,4 +64,5 @@ const categoryList = storeToRefs(store).categoryList;
 const showClock = storeToRefs(settingsStore).showClock;
 const heroImage = storeToRefs(settingsStore).heroImage;
 const activeModal = storeToRefs(uiStore).activeModal;
+const showPrivacyLink = import.meta.env.VITE_APP_TARGET !== "extension";
 </script>

@@ -16,6 +16,13 @@ const routes: Array<RouteRecordRaw> = [
   // }
 ];
 
+if (import.meta.env.VITE_APP_TARGET !== "extension") {
+  routes.push({
+    path: "/privacy",
+    component: () => import("../views/Privacy.vue"),
+  });
+}
+
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
