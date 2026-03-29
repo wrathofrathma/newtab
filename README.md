@@ -173,7 +173,7 @@ pnpm build:ext:firefox
 Outputs:
 
 - Unpacked extension folders: `dist-extension/chrome` and `dist-extension/firefox`
-- Zip files: `artifacts/newtab-chrome.zip` and `artifacts/newtab-firefox.zip`
+- Zip files: `artifacts/cattab-chrome.zip` and `artifacts/cattab-firefox.zip`
 
 Firefox bundle includes:
 

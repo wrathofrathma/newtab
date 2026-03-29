@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "New Tab",
+  "name": "CatTab",
   "version": "1.0.1",
   "description": "Minimal new tab extension",
   "author": "Rathma",

@@ -80,7 +80,7 @@ function buildSite() {
 
 function bundleTarget(target, baseManifest) {
   const targetDir = path.join(extensionDir, target);
-  const zipPath = path.join(artifactsDir, `newtab-${target}.zip`);
+  const zipPath = path.join(artifactsDir, `cattab-${target}.zip`);
 
   rmSync(targetDir, { recursive: true, force: true });
   mkdirSync(targetDir, { recursive: true });
